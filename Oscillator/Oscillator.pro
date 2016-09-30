@@ -14,13 +14,11 @@ INCLUDEPATH += ../audioEngine
 SOURCES += main.cpp\
         mainwindow.cpp\
         oscillatorsource.cpp\
-    oscillator.cpp \
-    envelope.cpp
+    oscillator.cpp
 
 HEADERS  += mainwindow.h \
     oscillatorsource.h\
-    oscillator.h \
-    envelope.h
+    oscillator.h
 
 FORMS    += mainwindow.ui
 
