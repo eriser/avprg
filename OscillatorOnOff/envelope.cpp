@@ -14,9 +14,11 @@ inline float gain2db(float gain){
 
 Envelope::Envelope()
     : gain(0), sampleRate(0), state(OFF), releaseSeconds(0)
+    , attackSeconds(0)
 {
     // zu Testzwecken 1 Sekunde Releasezeit
     setReleaseSeconds(5);
+    setAttackSeconds(1);
 }
 void Envelope::setSampleRate(float sampleRate){
     this->sampleRate = sampleRate;
@@ -24,9 +26,12 @@ void Envelope::setSampleRate(float sampleRate){
 void Envelope::setReleaseSeconds(float seconds){
     this->releaseSeconds = seconds;
 }
+void Envelope::setAttackSeconds(float seconds){
+    this->attackSeconds = seconds;
+}
 
 void Envelope::on(){
-    setState(ON);
+    setState(ATTACK);
 }
 void Envelope::off(){
     setState(RELEASE);
@@ -37,6 +42,13 @@ void Envelope::setState(State state){
     if (state == OFF){
         gain = 0;
         qDebug() << "OFF";
+    }
+    if (state == ATTACK){
+        float gainFactor_dB
+                = fabs(0 - MIN_GAIN_DB)/(sampleRate * attackSeconds);
+        gainFactor = db2gain(gainFactor_dB);
+        gain = MIN_GAIN;
+        qDebug() << "ATTACK" << gainFactor;
     }
     if (state == ON){
         gain = gainFactor = 1;
@@ -53,7 +65,9 @@ void Envelope::setState(State state){
 float Envelope::process(float input){
     gain *= gainFactor;
     float output = gain * input;
-
+    if (gain > 1 && state == ATTACK){
+        setState(ON);
+    }
     if (gain < MIN_GAIN && state == RELEASE){
         setState(OFF);
     }
