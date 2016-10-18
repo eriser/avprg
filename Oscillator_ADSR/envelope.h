@@ -2,22 +2,6 @@
 #define ENVELOPE_H
 
 
-class EnvelopeSection{
-public:
-    void initialize (float sampleRate);
-    void setStartDb(float dB);
-    void setStopDb(float dB);
-    void setDuration(float seconds);
-    void start();
-    void stop();
-    void getValue();
-private:
-    float sampleRate;
-    float start_dB;
-    float end_dB;
-    float durationSeconds;
-    float time;
-};
 
 class Envelope
 {
