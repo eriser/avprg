@@ -16,8 +16,8 @@ public:
     ~MainWindow();
 
 private:
-    void testImage();
-    void showMat(const cv::Mat& mat);
+    void createImage(cv::Mat& mat);
+    void showImage(const cv::Mat& mat);
     Ui::MainWindow *ui;
 };
 
