@@ -1,3 +1,5 @@
+INCLUDEPATH += ../opencv
+HEADERS += ../opencv/cvmattoqimage.h
 
 win32 {
 #  für Windows muss die Umgebungsvariable OPENCV_DIR gesetzt sein 
