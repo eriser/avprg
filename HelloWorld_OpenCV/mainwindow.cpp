@@ -16,8 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     Mat image(300, 400, CV_8UC3);
 
 
-    createImage(image);
-
+//    createImage(image);
+    schachbrett(image);
     showImage(image);
 }
 
@@ -25,8 +25,30 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::schachbrett(cv::Mat& mat){
+    const Scalar black(0,0,0);
+    const Scalar white(255,255,255);
+
+    int width = mat.cols/10;
+    int height = mat.rows/10;
+
+    mat.setTo(white);
+    for(int x = 0; x < 10; x++){
+        for(int y = 0; y < 10; y++){
+            if((x + y)%2 == 0){
+                Point linksOben(x*width, y*height);
+                Point rechtsUnten(x*width+width, y*height+height);
+                rectangle(mat, linksOben, rechtsUnten, black, CV_FILLED);
+            }
+        }
+    }
+}
 
 void MainWindow::createImage(Mat& image){
+    // Bildbreite
+    int width = image.cols;
+    int height = image.rows;
+
     // set background color
     Scalar yellow = Scalar(0, 200, 200);
     image.setTo(yellow);

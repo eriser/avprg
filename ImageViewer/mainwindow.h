@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <opencv2/opencv.hpp>
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,10 +15,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_action_ffnen_triggered();
+
 private:
-    void schachbrett(cv::Mat& mat);
-    void createImage(cv::Mat& mat);
-    void showImage(const cv::Mat& mat);
     Ui::MainWindow *ui;
 };
 
