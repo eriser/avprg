@@ -12,10 +12,11 @@ win32 {
     Debug:LIBS +=  -lopencv_world310d
 }
 macx {
-# im WS1617 nicht getestet
-    INCLUDEPATH += /usr/local/include
-    LIBS += -L/usr/local/lib
-    LIBS +=  -lopencv_core -lopencv_highgui -lopencv_imgproc
+# https://www.learnopencv.com/configuring-qt-for-opencv-on-osx/
+# (WS1617 von Hennes Römmer getestet, Danke!)
+	QT_CONFIG -= no-pkg-config
+	CONFIG  += link_pkgconfig
+    PKGCONFIG += opencv
 }
 linux {
 # im WS1617 nicht getestet
