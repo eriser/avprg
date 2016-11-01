@@ -33,23 +33,25 @@ void VideoEngine::openFile(const QString& file){
         }
         else{
             _videoFormat.setFormat(videoCapture);
+            qDebug() << _videoFormat.toString().c_str();
         }
     } catch (cv::Exception e) {
-       qDebug() << e.err.c_str();
+        qDebug() << e.err.c_str();
     }
 }
 
 void VideoEngine::openCamera(int device){
     try {
-        bool success = videoCapture.open(device);
+        bool success = videoCapture.open(0  + device);
         if (!success){
             qDebug() << "Error: cannot open camera ";
         }
         else{
             _videoFormat.setFormat(videoCapture);
+            qDebug() << _videoFormat.toString().c_str();
         }
     } catch (cv::Exception e) {
-       qDebug() << e.err.c_str();
+        qDebug() << e.err.c_str();
     }
 }
 
@@ -61,40 +63,51 @@ void VideoEngine::stop()
 
 void VideoEngine::run()
 {
-    int milliSeconds = 1000/_videoFormat.framesPerSecond();
-    int frameNumber = 0;
-    while(!stopped)
-    {
-        cv::Mat cvFrame;
-        videoCapture >> cvFrame;
-
-        // retrieve Mat::type()
-        frameNumber++;
-        if (frameNumber == 1){
-            _videoFormat.setType(cvFrame.type());
-            if (processor != 0){
-                processor->startProcessing(_videoFormat);
+    if (videoCapture.isOpened()){
+        int milliSeconds = 1000/_videoFormat.framesPerSecond();
+        int frameNumber = 0;
+        while(!stopped)
+        {
+            cv::Mat cvFrame;
+            if (false == videoCapture.grab()){
+                qDebug() << "grab() failed";
+                break;
             }
-        }
+            if (false == videoCapture.retrieve(cvFrame, 0)){
+                qDebug() << "retrieve() failed (1)";
+                if (false == videoCapture.retrieve(cvFrame, 0)){
+                    qDebug() << "retrieve() failed (2)";
+                    break;
+                }
+            }
+            // retrieve Mat::type()
+            frameNumber++;
+            if (frameNumber == 1){
+                _videoFormat.setType(cvFrame.type());
+                if (processor != 0){
+                    processor->startProcessing(_videoFormat);
+                }
+            }
 
-        // queue the image to the gui
-        emit sendInputImage(cvMatToQImage(cvFrame));
+            // queue the image to the gui
+            emit sendInputImage(cvMatToQImage(cvFrame));
 
-        // Process Video Frame
-        if (processor != 0){
-            cvFrame = processor->process(cvFrame);
-        }
+            // Process Video Frame
+            if (processor != 0){
+                cvFrame = processor->process(cvFrame);
+            }
 
-        emit sendProcessedImage(cvMatToQImage(cvFrame));
+            emit sendProcessedImage(cvMatToQImage(cvFrame));
 
-        // check if stopped
-        QMutexLocker locker(&mutex);
-        if (stopped) {
-            break;
-        }
+            // check if stopped
+            QMutexLocker locker(&mutex);
+            if (stopped) {
+                break;
+            }
 
-        if (usingCamera == false){
-            msleep(milliSeconds);
+            if (usingCamera == false){
+                msleep(milliSeconds);
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ public:
     int framesPerSecond()const;
     int frameCount()const;
     int type()const;
+    std::string toString() const;
 private:
     int _frameWidth;
     int _frameHeight;

@@ -4,15 +4,15 @@
 #
 #-------------------------------------------------
 
-INCLUDEPATH += ../videoengine
+INCLUDEPATH += ../opencv
 
-SOURCES +=  ../videoengine/videoengine.cpp \
-            ../videoengine/videowidget.cpp \
-    ../videoengine/videoformat.cpp
-HEADERS  += ../videoengine/videoengine.h \
-            ../videoengine/videowidget.h \
-            ../videoengine/cvmattoqimage.h \
-            ../videoengine/videoprocessor.h \
-    ../videoengine/videoformat.h
+SOURCES +=  ../opencv/videoengine.cpp \
+            ../opencv/videowidget.cpp \
+    ../opencv/videoformat.cpp
+HEADERS  += ../opencv/videoengine.h \
+            ../opencv/videowidget.h \
+            ../opencv/cvmattoqimage.h \
+            ../opencv/videoprocessor.h \
+    ../opencv/videoformat.h
 
-include(../videoengine/opencv.pri)
+include(../opencv/opencv.pri)

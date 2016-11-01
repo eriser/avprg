@@ -1,5 +1,5 @@
 #include "videoformat.h"
-
+#include <sstream>
 VideoFormat::VideoFormat()
     : _frameWidth(0)
     , _frameHeight(0)
@@ -15,6 +15,9 @@ void VideoFormat::setFormat(cv::VideoCapture & videoCapture){
     _frameHeight = videoCapture.get(CV_CAP_PROP_FRAME_HEIGHT);
     _framesPerSecond = videoCapture.get(CV_CAP_PROP_FPS);
     _frameCount = videoCapture.get(CV_CAP_PROP_FRAME_COUNT);
+    if (_framesPerSecond == 0){
+        _framesPerSecond = 30;
+    }
 }
 void VideoFormat::setType(int type){
     this->_type = type;
@@ -38,4 +41,13 @@ int VideoFormat::frameCount() const {
 
 int VideoFormat::type()const{
     return _type;
+}
+std::string VideoFormat::toString() const{
+    std::ostringstream oss;
+    oss << "width: " << _frameWidth
+        << " height: " << _frameHeight
+        << " fps: " << _framesPerSecond
+        << " frameCount: " << _frameCount
+        << " type: " << _type;
+    return oss.str();
 }
