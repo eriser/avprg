@@ -8,16 +8,16 @@ QT       += core gui widgets
 
 
 
-TARGET = VideoPlayer
+TARGET = BrightnessProcessor
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
         videoplayer.cpp \
-    copyprocessor.cpp
+    brightnessprocessor.cpp
 
 HEADERS  += videoplayer.h \
-    copyprocessor.h
+    brightnessprocessor.h
 
 FORMS    += videoplayer.ui
 

@@ -6,24 +6,30 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::VideoPlayer)
     , videoThread(new VideoEngine)
-    , copyProcessor(new CopyProcessor)
+    , brightnessProcessor(new BrightnessProcessor())
 {
     ui->setupUi(this);
-    videoThread->setProcessor(copyProcessor);
-    connect(videoThread, &VideoEngine::sendInputImage,
-            ui->inputFrame, &VideoWidget::setImage);
-    connect(videoThread, &VideoEngine::sendProcessedImage,
-            ui->processedFrame, &VideoWidget::setImage);
+    videoThread->setProcessor(brightnessProcessor);
+    connect(videoThread, &VideoEngine::sendInputImage, ui->inputFrame, &VideoWidget::setImage);
+    connect(videoThread, &VideoEngine::sendProcessedImage, ui->processedFrame, &VideoWidget::setImage);
 }
 
 VideoPlayer::~VideoPlayer()
 {
     delete videoThread;
+    delete brightnessProcessor;
     delete ui;
-    delete copyProcessor;
 }
 
-void VideoPlayer::on_actionVideodatei_ffnen_triggered()
+
+
+void VideoPlayer::on_brightnessSlider_valueChanged(int value)
+{
+    brightnessProcessor->setOffset(value);
+}
+
+
+void VideoPlayer::on_actionDatei_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
 
@@ -32,12 +38,12 @@ void VideoPlayer::on_actionVideodatei_ffnen_triggered()
      }
 }
 
-void VideoPlayer::on_actionKamera_ffnen_triggered()
+void VideoPlayer::on_actionKamera_triggered()
 {
     videoThread->openCamera();
 }
 
 void VideoPlayer::on_actionPlay_triggered()
 {
-    videoThread->start();
+  videoThread->start();
 }

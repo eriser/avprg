@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include <QImage>
 #include "videoengine.h"
-#include "copyprocessor.h"
-
+#include "brightnessprocessor.h"
 namespace Ui {
 class VideoPlayer;
 }
@@ -19,13 +18,14 @@ public:
     ~VideoPlayer();
 
 private slots:
-    void on_actionVideodatei_ffnen_triggered();
-    void on_actionKamera_ffnen_triggered();
+    void on_brightnessSlider_valueChanged(int value);
+    void on_actionDatei_triggered();
+    void on_actionKamera_triggered();
     void on_actionPlay_triggered();
 private:
     Ui::VideoPlayer *ui;
     VideoEngine *videoThread;
-    CopyProcessor *copyProcessor;
+    BrightnessProcessor* brightnessProcessor;
 };
 
 #endif // VIDEOPLAYER_H
