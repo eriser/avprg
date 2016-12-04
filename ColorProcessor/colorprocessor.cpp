@@ -50,5 +50,6 @@ Mat ColorProcessor::process(const Mat &input){
         line(output, Point(centerX-5, centerY), Point(centerX+5, centerY),
              Scalar(0, 255, 0), 2);
     }
+
     return output;
 }
